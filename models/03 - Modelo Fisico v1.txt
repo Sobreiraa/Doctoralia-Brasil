@@ -1,0 +1,58 @@
+CREATE TABLE dim_medico (
+    sk_medico SERIAL PRIMARY KEY,
+    id INT NOT NULL,
+    nome VARCHAR(255) NOT NULL,
+    titulo VARCHAR(10),
+    cidade VARCHAR(255),
+    estado VARCHAR(2)
+);
+
+
+CREATE TABLE dim_especializacao (
+    sk_especializacao SERIAL PRIMARY KEY,
+    id INT NOT NULL,
+    nome_especializacao VARCHAR(255) NOT NULL
+);
+
+
+CREATE TABLE dim_data (
+    sk_data SERIAL PRIMARY KEY,
+    data_completa DATE NOT NULL,
+    dia INT NOT NULL,
+    mes INT NOT NULL,
+    ano INT NOT NULL
+);
+
+
+CREATE TABLE dim_tipo_consulta (
+    sk_tipo_consulta SERIAL PRIMARY KEY,
+    id INT NOT NULL,
+    tipo_consulta VARCHAR(15) NOT NULL
+);
+
+
+CREATE TABLE ft_consulta (
+    sk_consulta SERIAL PRIMARY KEY,
+    sk_medico INT NOT NULL,
+    sk_especializacao INT NOT NULL,
+    sk_data INT NOT NULL,
+    sk_tipo_consulta INT NOT NULL,
+    preco_consulta DECIMAL(10,2),
+    nota DECIMAL(2,1), 
+
+    CONSTRAINT fk_medico
+        FOREIGN KEY (sk_medico)
+        REFERENCES dim_medico(sk_medico),
+
+    CONSTRAINT fk_especializacao
+        FOREIGN KEY (sk_especializacao)
+        REFERENCES dim_especializacao(sk_especializacao),
+
+    CONSTRAINT fk_data
+        FOREIGN KEY (sk_data)
+        REFERENCES dim_data(sk_data),
+
+    CONSTRAINT fk_tipo_consulta
+        FOREIGN KEY (sk_tipo_consulta)
+        REFERENCES dim_tipo_consulta(sk_tipo_consulta)
+);
