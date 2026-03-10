@@ -3,6 +3,7 @@ CREATE TABLE dim_medico (
     id INT NOT NULL,
     nome VARCHAR(255) NOT NULL,
     titulo VARCHAR(10),
+    atende_remoto BOOLEAN,
     cidade VARCHAR(255),
     estado VARCHAR(2)
 );
