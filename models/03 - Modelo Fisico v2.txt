@@ -5,7 +5,8 @@ CREATE TABLE dim_medico (
     titulo VARCHAR(10),
     atende_remoto BOOLEAN,
     cidade VARCHAR(255),
-    estado VARCHAR(2)
+    estado VARCHAR(2),
+    qtd_consultas_avaliadas INT
 );
 
 
