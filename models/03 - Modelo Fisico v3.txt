@@ -6,7 +6,10 @@ CREATE TABLE dim_medico (
     atende_remoto BOOLEAN,
     cidade VARCHAR(255),
     estado VARCHAR(2),
-    qtd_consultas_avaliadas INT
+
+    CONSTRAINT fk_especializacao
+        FOREIGN KEY (sk_especializacao)
+        REFERENCES dim_especializacao(sk_especializacao)
 );
 
 
@@ -45,10 +48,6 @@ CREATE TABLE ft_consulta (
     CONSTRAINT fk_medico
         FOREIGN KEY (sk_medico)
         REFERENCES dim_medico(sk_medico),
-
-    CONSTRAINT fk_especializacao
-        FOREIGN KEY (sk_especializacao)
-        REFERENCES dim_especializacao(sk_especializacao),
 
     CONSTRAINT fk_data
         FOREIGN KEY (sk_data)
