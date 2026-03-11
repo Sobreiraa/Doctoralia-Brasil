@@ -5,14 +5,16 @@ import pandas as pd
 import pandera.pandas as pa
 
 
-
 def transformando_df(df_doctoralia: pd.DataFrame):
     # Renomeando as colunas para tradução em português
     df_doctoralia.columns = [
-        "id", "titulo", "nome", "cidade", "cidade2", "estado", "especializacao",
+        "id_medico", "titulo", "nome", "cidade", "cidade2", "estado", "especializacao",
         "qtd_consultas_avaliadas", "data_ult_avalicao", "atende_remoto", "preco", "url",
         "data_busca_dados"
-    ] 
+    ]
+
+    # Substituindo os "-" por espaços nos valores na coluna especializacao
+    df_doctoralia["especializacao"] = df_doctoralia["especializacao"].str.replace("-", " ")
 
     # Coletando apenas a UF do estado
     df_doctoralia["estado"] = df_doctoralia["estado"].str[-2:].str.upper()
@@ -20,13 +22,56 @@ def transformando_df(df_doctoralia: pd.DataFrame):
     # Alterando o campo atende_remoto
     df_doctoralia["atende_remoto"] = df_doctoralia["atende_remoto"].astype(int).astype(bool)
 
+    return df_doctoralia
+
+
+def dim_especializacao(df: pd.DataFrame):
+    # Criando o df com as especializações dos médicos, removendo as duplicadas
+    df_especializacao = df[["especializacao"]].drop_duplicates()
+
+    # Removendo valor nulo
+    for i, valor in df_especializacao["especializacao"].items():
+        # Se for NaN ou string vazia / só espaços
+        if pd.isna(valor) or str(valor).strip() == "":
+            df_especializacao.drop(i, inplace=True) # Deletando a linha
+    
+    # Criando uma especialização "desconhecida" para os médicos sem especializações informada
+    linha_desconhecida = pd.DataFrame({"especializacao": ["desconhecido"]})
+    df_especializacao = pd.concat(
+        [linha_desconhecida, df_especializacao],
+        ignore_index=True
+    )
+
+    # Criando surrogate key
+    df_especializacao.insert(0, "sk_especializacao", range(1, len(df_especializacao) + 1))
+
+    # Convertando o type de float para int da coluna sk_especializacao
+    df_especializacao["sk_especializacao"] = df_especializacao["sk_especializacao"].astype("Int64")
+
+    # Criando o ID
+    df_especializacao.insert(1, "id", range(1, len(df_especializacao) + 1))
+
+    # Validação
+    schema_especializacao.validate(df_especializacao)
+
+    # Salvando o CSV
+    df_especializacao.to_csv("data/output/dim_especializacao.csv", index=False)
+
+    return "Arquivo 'dim_especializacao.csv' criado com sucesso"
+
 
 def dim_medico(df: pd.DataFrame):
-    # Criando a tabela dim_medico
-    df_medico = df[["id", "nome", "titulo", "atende_remoto", "cidade", "estado", "qtd_consultas_avaliadas"]]
+    df_especializacao = pd.read_csv("data/output/dim_especializacao.csv")
 
-    # Substituindo o tipo da coluna de Float para Int
-    df_medico["qtd_consultas_avaliadas"] = df_medico["qtd_consultas_avaliadas"].astype("Int64")
+    df = df.merge(df_especializacao, on="especializacao", how="left")
+
+    df["sk_especializacao"] = df["sk_especializacao"].fillna(0).astype("Int64")
+
+    # Criando a tabela dim_medico
+    df_medico = df[["sk_especializacao", "id_medico", "nome", "titulo", "atende_remoto", "cidade", "estado"]]
+
+    # Criando surrogate key
+    df_medico.insert(0, "sk_medico", range(1, len(df_medico) + 1))
 
     # Validação
     try:
@@ -36,6 +81,8 @@ def dim_medico(df: pd.DataFrame):
 
     # Salvando o csv
     df_medico.to_csv("data/output/dim_medico.csv", index=False)
+
+    return "Arquivo 'dim_medico.csv' criado com sucesso"
 
 
 def dim_data():
@@ -50,36 +97,40 @@ def dim_data():
     df["mes"] = df["data_completa"].dt.month
     df["ano"] = df["data_completa"].dt.year
 
+    # Criando surrogate key
+    df.insert(0, "sk_data", range(1, len(df) + 1))
+
     # Salvando o csv
     df.to_csv("data/output/dim_data.csv", index=False)
 
-
-def dim_especializacao(df: pd.DataFrame):
-    # Criando o df com as especializações dos médicos, removendo as duplicadas
-    df_especializacao = df[["especializacao"]].drop_duplicates()
-
-    # Substituindo os "-" por espaço nos valores
-    df_especializacao["especializacao"] = df_especializacao["especializacao"].str.replace("-", " ")
-
-    # Removendo valor nulo
-    for i, valor in df_especializacao["especializacao"].items():
-        # Se for NaN ou string vazia / só espaços
-        if pd.isna(valor) or str(valor).strip() == "":
-            df_especializacao.drop(i, inplace=True) # Deletando a linha
-
-    # Validação
-    schema_especializacao.validate(df_especializacao)
-
-    # Salvando o CSV
-    df_especializacao.to_csv("data/output/dim_especializacao.csv", index=False)
+    return "Arquivo 'dim_data.csv' criado com sucesso"
 
 
 def dim_tipo_consulta():
     # Criando o df com o tipo da consulta
     df_tipo_consulta = pd.DataFrame({"tipo_consulta": ["remota", "presencial"]})
 
+    # Criando surrogate key
+    df_tipo_consulta.insert(0, "sk_tipo_consulta", range(1, len(df_tipo_consulta) + 1))
+
+    # Criando o ID
+    df_tipo_consulta.insert(1, "id", range(1, len(df_tipo_consulta) + 1))
+
     # Salvando o CSV
     df_tipo_consulta.to_csv("data/output/dim_tipo_consulta.csv", index=False)
+
+    return "Arquivo 'dim_tipo_consulta.csv' criado com sucesso"
+
+
+if __name__ == "__main__":
+    df = extrai_csv("data/input")
+    df_transformado = transformando_df(df)
+    dim_especializacao(df_transformado)
+    dim_medico(df_transformado)
+    dim_data()
+    dim_tipo_consulta()
+
+
 
    
 

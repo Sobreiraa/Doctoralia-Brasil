@@ -1,3 +1,3 @@
-tipo_consulta
-remota
-presencial
+sk_tipo_consulta,id,tipo_consulta
+1,1,remota
+2,2,presencial

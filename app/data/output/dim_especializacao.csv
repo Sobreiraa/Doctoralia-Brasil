@@ -1,102 +1,103 @@
-especializacao
-alergista
-alergista pediatrico
-pneumologista pediatrico
-pediatra
-dermatologista
-ortopedista traumatologista
-patologista clinico
-especialista em dor
-anestesiologista
-cirurgiao vascular
-angiologista
-cardiologista
-cardiologista pediatrico
-cirurgiao buco maxilo facial
-dentista
-cirurgiao cardiovascular
-cirurgiao de cabeca e pescoco
-cirurgiao plastico
-cirurgiao cranio maxilo facial
-otorrino
-cirurgiao da mao
-cirurgiao geral
-cirurgiao do aparelho digestivo
-cirurgiao oncologico
-urologista
-coloproctologista
-oncologista
-cirurgiao pediatrico
-cirurgiao toracico
-endocrinologista
-medico clinico geral
-fisioterapeuta
-terapeuta complementar
-nutricionista
-psicanalista
-psicologo
-endocrinologista pediatrico
-nutrologo
-gastroenterologista
-endoscopista
-enfermeiro
-ginecologista
-especialista em medicina fisica e reabilitacao
-psiquiatra
-especialista em biomedicina
-especialista em clinica medica
-hematologista
-nefrologista
-geriatra
-infectologista
-reumatologista
-especialista em diagnostico por imagem
-radiologista
-neurologista
-oftalmologista
-especialista em harmonizacao orofacial
-especialista em medicina do adolescente
-especialista em medicina estetica
-medico acupunturista
-especialista em medicina nuclear
-generalista
-medico de familia
-especialista em neonatologia
-fonoaudiologo
-especialista em reproducao humana
-hepatologista
-gastroenterologista pediatrico
-pneumologista
-geneticista
-hematologista pediatrico
-homeopata
-infectologista pediatrico
-internista
-mastologista
-medico citopatologista
-medico de trafego
-medico do esporte
-medico do sono
-medico do trabalho
-medico hiperbarista
-neurocirurgiao
-nefrologista pediatrico
-neurofisiologista
-neurologista pediatrico
-ortodontista
-odontopediatra
-osteopata
-quiropraxista
-podologista
-psicopedagogo
-radioterapeuta
-reumatologista pediatrico
-sexologo
-terapeuta ocupacional
-anatomopatologista
-educador fisico
-especialista em medicina preventiva
-medico de emergencia
-medico perito
-especialista em administracao em saude
-intensivista
+sk_especializacao,id,especializacao
+1,1,desconhecido
+2,2,alergista
+3,3,alergista pediatrico
+4,4,pneumologista pediatrico
+5,5,pediatra
+6,6,dermatologista
+7,7,ortopedista traumatologista
+8,8,patologista clinico
+9,9,especialista em dor
+10,10,anestesiologista
+11,11,cirurgiao vascular
+12,12,angiologista
+13,13,cardiologista
+14,14,cardiologista pediatrico
+15,15,cirurgiao buco maxilo facial
+16,16,dentista
+17,17,cirurgiao cardiovascular
+18,18,cirurgiao de cabeca e pescoco
+19,19,cirurgiao plastico
+20,20,cirurgiao cranio maxilo facial
+21,21,otorrino
+22,22,cirurgiao da mao
+23,23,cirurgiao geral
+24,24,cirurgiao do aparelho digestivo
+25,25,cirurgiao oncologico
+26,26,urologista
+27,27,coloproctologista
+28,28,oncologista
+29,29,cirurgiao pediatrico
+30,30,cirurgiao toracico
+31,31,endocrinologista
+32,32,medico clinico geral
+33,33,fisioterapeuta
+34,34,terapeuta complementar
+35,35,nutricionista
+36,36,psicanalista
+37,37,psicologo
+38,38,endocrinologista pediatrico
+39,39,nutrologo
+40,40,gastroenterologista
+41,41,endoscopista
+42,42,enfermeiro
+43,43,ginecologista
+44,44,especialista em medicina fisica e reabilitacao
+45,45,psiquiatra
+46,46,especialista em biomedicina
+47,47,especialista em clinica medica
+48,48,hematologista
+49,49,nefrologista
+50,50,geriatra
+51,51,infectologista
+52,52,reumatologista
+53,53,especialista em diagnostico por imagem
+54,54,radiologista
+55,55,neurologista
+56,56,oftalmologista
+57,57,especialista em harmonizacao orofacial
+58,58,especialista em medicina do adolescente
+59,59,especialista em medicina estetica
+60,60,medico acupunturista
+61,61,especialista em medicina nuclear
+62,62,generalista
+63,63,medico de familia
+64,64,especialista em neonatologia
+65,65,fonoaudiologo
+66,66,especialista em reproducao humana
+67,67,hepatologista
+68,68,gastroenterologista pediatrico
+69,69,pneumologista
+70,70,geneticista
+71,71,hematologista pediatrico
+72,72,homeopata
+73,73,infectologista pediatrico
+74,74,internista
+75,75,mastologista
+76,76,medico citopatologista
+77,77,medico de trafego
+78,78,medico do esporte
+79,79,medico do sono
+80,80,medico do trabalho
+81,81,medico hiperbarista
+82,82,neurocirurgiao
+83,83,nefrologista pediatrico
+84,84,neurofisiologista
+85,85,neurologista pediatrico
+86,86,ortodontista
+87,87,odontopediatra
+88,88,osteopata
+89,89,quiropraxista
+90,90,podologista
+91,91,psicopedagogo
+92,92,radioterapeuta
+93,93,reumatologista pediatrico
+94,94,sexologo
+95,95,terapeuta ocupacional
+96,96,anatomopatologista
+97,97,educador fisico
+98,98,especialista em medicina preventiva
+99,99,medico de emergencia
+100,100,medico perito
+101,101,especialista em administracao em saude
+102,102,intensivista
