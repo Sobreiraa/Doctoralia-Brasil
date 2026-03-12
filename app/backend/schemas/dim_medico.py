@@ -10,4 +10,5 @@ schema_dim_medico = DataFrameSchema({
     "atende_remoto": Column(pa.Bool, nullable=True),
     "cidade": Column(pa.String, nullable=True),
     "estado": Column(pa.String, nullable=True),
+    "preco": Column(pa.Float, nullable=True, checks=Check(lambda s: s >= 0))
 })

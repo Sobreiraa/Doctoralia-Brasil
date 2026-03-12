@@ -43,13 +43,13 @@ def dim_especializacao(df: pd.DataFrame):
     )
 
     # Criando surrogate key
-    df_especializacao.insert(0, "sk_especializacao", range(1, len(df_especializacao) + 1))
+    df_especializacao.insert(0, "sk_especializacao", range(0, len(df_especializacao)))
 
     # Convertando o type de float para int da coluna sk_especializacao
     df_especializacao["sk_especializacao"] = df_especializacao["sk_especializacao"].astype("Int64")
 
     # Criando o ID
-    df_especializacao.insert(1, "id", range(1, len(df_especializacao) + 1))
+    df_especializacao.insert(1, "id", range(0, len(df_especializacao)))
 
     # Validação
     schema_especializacao.validate(df_especializacao)
@@ -61,21 +61,30 @@ def dim_especializacao(df: pd.DataFrame):
 
 
 def dim_medico(df: pd.DataFrame):
+    # Lendo o csv para buscar a sk_especializacao
     df_especializacao = pd.read_csv("data/output/dim_especializacao.csv")
 
+    # Junção dos DF
     df = df.merge(df_especializacao, on="especializacao", how="left")
 
+    # Trocando os valores Naan por 0 e alterando o type de float para int
     df["sk_especializacao"] = df["sk_especializacao"].fillna(0).astype("Int64")
 
     # Criando a tabela dim_medico
-    df_medico = df[["sk_especializacao", "id_medico", "nome", "titulo", "atende_remoto", "cidade", "estado"]]
+    df_medico = df[["sk_especializacao", "id_medico", "nome", "titulo", "atende_remoto", "cidade", "estado", "preco"]]
+
+    # converter para número
+    df_medico["preco"] = pd.to_numeric(df_medico["preco"], errors="coerce")
+
+    # remover preços zero ou negativos
+    df_medico.loc[df_medico["preco"] <= 0, "preco"] = None
 
     # Criando surrogate key
     df_medico.insert(0, "sk_medico", range(1, len(df_medico) + 1))
 
     # Validação
     try:
-        schema_dim_medico.validate(df_medico, lazy=True)
+       schema_dim_medico.validate(df_medico, lazy=True)
     except pa.errors.SchemaErrors as err:
         print(err.failure_cases)
 
@@ -121,14 +130,16 @@ def dim_tipo_consulta():
 
     return "Arquivo 'dim_tipo_consulta.csv' criado com sucesso"
 
+    
+        
 
 if __name__ == "__main__":
     df = extrai_csv("data/input")
     df_transformado = transformando_df(df)
-    dim_especializacao(df_transformado)
-    dim_medico(df_transformado)
-    dim_data()
-    dim_tipo_consulta()
+    print(dim_especializacao(df_transformado))
+    print(dim_medico(df_transformado))
+    print(dim_data())
+    print(dim_tipo_consulta())
 
 
 

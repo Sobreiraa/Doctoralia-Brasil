@@ -15,8 +15,10 @@ def extrai_csv(caminho: str):
     doctoralia_csv = os.path.join(caminho, '202210_doctoralia_br.csv')
     df_doctoralia = pd.read_csv(doctoralia_csv)
 
-
+    # retornando o DF
     return df_doctoralia
+
+
 
 
 
