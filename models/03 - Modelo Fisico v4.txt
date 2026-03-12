@@ -1,6 +1,14 @@
+CREATE TABLE dim_especializacao (
+    sk_especializacao SERIAL PRIMARY KEY,
+    id INT NOT NULL,
+    especializacao VARCHAR(255) NOT NULL
+);
+
+
 CREATE TABLE dim_medico (
     sk_medico SERIAL PRIMARY KEY,
-    id INT NOT NULL,
+    sk_especializacao INT,
+    id_medico INT NOT NULL,
     nome VARCHAR(255) NOT NULL,
     titulo VARCHAR(10),
     atende_remoto BOOLEAN,
@@ -10,13 +18,6 @@ CREATE TABLE dim_medico (
     CONSTRAINT fk_especializacao
         FOREIGN KEY (sk_especializacao)
         REFERENCES dim_especializacao(sk_especializacao)
-);
-
-
-CREATE TABLE dim_especializacao (
-    sk_especializacao SERIAL PRIMARY KEY,
-    id INT NOT NULL,
-    nome_especializacao VARCHAR(255) NOT NULL
 );
 
 
