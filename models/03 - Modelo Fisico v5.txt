@@ -37,10 +37,9 @@ CREATE TABLE dim_tipo_consulta (
 );
 
 
-CREATE TABLE ft_consulta (
+CREATE TABLE fato_consulta (
     sk_consulta SERIAL PRIMARY KEY,
     sk_medico INT NOT NULL,
-    sk_especializacao INT NOT NULL,
     sk_data INT NOT NULL,
     sk_tipo_consulta INT NOT NULL,
     preco_consulta DECIMAL(10,2),
