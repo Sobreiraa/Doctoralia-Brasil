@@ -130,17 +130,6 @@ def dim_tipo_consulta():
 
     return "Arquivo 'dim_tipo_consulta.csv' criado com sucesso"
 
-    
-        
-
-if __name__ == "__main__":
-    df = extrai_csv("data/input")
-    df_transformado = transformando_df(df)
-    print(dim_especializacao(df_transformado))
-    print(dim_medico(df_transformado))
-    print(dim_data())
-    print(dim_tipo_consulta())
-
 
 
    

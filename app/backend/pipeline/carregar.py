@@ -6,15 +6,12 @@ import numpy as np
 engine = create_engine(
     "postgresql+psycopg2://admin:admin@localhost:5432/doctoralia_db"
 )
-conn = engine.connect()
+
 
 
 def carrega_tabelas():
-    # Contador para executar o código apenas uma vez
-    cont = 0
-
-    # Verificando se o contador está menor que 1
-    if cont < 1:
+    
+    try:
         # Carregando tabela 'DIM_ESPECIALIZACAO'
         df_dim_especializacao = pd.read_csv("data/output/dim_especializacao.csv")
 
@@ -28,9 +25,9 @@ def carrega_tabelas():
         # Carregando tabela 'DIM_MEDICO'
         df_dim_medico_com_preco = pd.read_csv("data/output/dim_medico.csv")
 
-        df_dim_medico_sem_preco = df_dim_medico_com_preco["sk_medico", "sk_especializacao", 
+        df_dim_medico_sem_preco = df_dim_medico_com_preco[["sk_medico", "sk_especializacao", 
                                                           "id_medico", "nome", "titulo", "atende_remoto", 
-                                                          "cidade", "estado"]
+                                                          "cidade", "estado"]]
 
         df_dim_medico_sem_preco.to_sql(
             "dim_medico",
@@ -59,7 +56,7 @@ def carrega_tabelas():
             index=False
         )
         
-        # Criar estrutura da fato
+        # Criando e carregando a tabela 'FATO CONSULTA'
         df_fato_consulta = pd.DataFrame({
             "sk_consulta": range(1, 150001)
         })
@@ -87,10 +84,9 @@ def carrega_tabelas():
         df_fato_consulta["tipo_consulta"] = np.where(
             df_fato_consulta["atende_remoto"] == False,
             "presencial",
-            np.random.choice(["presencial", "remoto"], len(df_fato_consulta))
+            np.random.choice([1, 2], len(df_fato_consulta))
         )
 
-        # ---------------------------
         # Converter para SK
         df_fato_consulta = df_fato_consulta.merge(
             df_tipo_consulta,
@@ -98,10 +94,12 @@ def carrega_tabelas():
             how="left"
         )
 
+        # Caso algum valor não encontre correspondência
+        df_fato_consulta["sk_tipo_consulta"] = df_fato_consulta["sk_tipo_consulta"].fillna(1)
+
         # Preço da consulta
         df_fato_consulta["preco_consulta"] = df_fato_consulta["preco"]
 
-        # ---------------------------
         # Gerando nota da consulta
         df_fato_consulta["nota"] = np.round(
             np.random.uniform(0, 5, len(df_fato_consulta)), 1
@@ -124,12 +122,17 @@ def carrega_tabelas():
                 "nota"
             ]
         ]
+        
+        df_fato_consulta.to_csv('data/output/fato_consulta.csv', index=False)
+
+        df_fato_consulta.to_sql(
+            "fato_consulta",
+            engine,
+            if_exists="append",
+            index=False
+        )
 
         print('Integração com o banco de dados feita com sucesso. Dados carregados.')
-        cont += 1
-    else:
-        print('Dados já enviados ao banco. Verifique se não está tentando enviar dados duplicados.')
-
-
-if __name__ == "__main__":
-    carrega_tabelas()
+    except:
+        print('Ocorreu algum erro.')
+    
